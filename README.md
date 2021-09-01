@@ -1,2 +1,2 @@
 # libHSL
-a hyperspectral point cloud data format C/C++ development library.
+libHSL is a hyperspectral laser point cloud data format C/C++ development library. Using this library, user can easily read, write and update HSP hyperspectral laser point cloud data file format. By learning the advantages of LAS format specification, HSP file format supports flexible 3D point data structure configuration, including user-defined point attributes, multi band values and multi band waveform records, etc.
