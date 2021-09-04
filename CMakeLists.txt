@@ -27,10 +27,10 @@ if(WIN32)
   set(LIBHSL_C_LIB_NAME libhsl_c)
   
   # Name of Chipper library
-  set(LASCHIP_LIB_NAME libhsl_chipper )  
+  set(HSLCHIP_LIB_NAME libhsl_chipper )  
   
   # Name of Kernel libray
-  set(LASKERNEL_LIB_NAME libhsl_kernel )
+  set(HSLKERNEL_LIB_NAME libhsl_kernel )
   
 else()
   # Name of C++ library
@@ -40,10 +40,10 @@ else()
   set(LIBHSL_C_LIB_NAME hsl_c)
 
   # Name of Chipper library
-  set(LASCHIP_LIB_NAME hsl_chipper )  
+  set(HSLCHIP_LIB_NAME hsl_chipper )  
 
   # Name of Kernel libray
-  set(LASKERNEL_LIB_NAME hsl_kernel )
+  set(HSLKERNEL_LIB_NAME hsl_kernel )
 endif()
 
 # Name of test suite runner
@@ -317,7 +317,7 @@ SET(CPACK_CMAKE_GENERATOR "Unix Makefiles")
 set(CPACK_SOURCE_PACKAGE_FILE_NAME
   "${CMAKE_PROJECT_NAME}-${VERSION}")
   
-list(APPEND CPACK_SOURCE_IGNORE_FILES "/test/data/TO_core_last_zoom.las")
+list(APPEND CPACK_SOURCE_IGNORE_FILES "/test/data/TO_core_last_zoom.hsp")
 list(APPEND CPACK_SOURCE_IGNORE_FILES "_CPack_Packages")
 list(APPEND CPACK_SOURCE_IGNORE_FILES ".gz")
 list(APPEND CPACK_SOURCE_IGNORE_FILES ".bz2")
