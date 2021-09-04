@@ -5,7 +5,7 @@ libHSL is a hyperspectral laser point cloud data format C/C++ development librar
 libHSL requires:
   - boost 1.38 or greater
   - cmake 2.6 or greater
-  - 
+
 For Unix/Linux/Mac:
 
     mkdir build
@@ -33,7 +33,7 @@ To learn how to use libHSL, please find the sample usage code from the sample di
 
 # Contribute
 
-The recommended way to submit your changes is via a pull request.
+As a community developed and maintained repository, we welcome new quality contributions. The recommended way to submit your changes is via a pull request.
 
 Before submitting a patch please ensure:
 
