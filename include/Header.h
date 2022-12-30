@@ -74,6 +74,8 @@ public:
     /// Comparison operator.
     bool operator==(const Header& other) const;
 
+    bool isCompatible(const Header& other) const;
+
     /// Get file signature.
     /// \return 5-characters long string - \b "HSPCD".
     std::string getFileSignature() const;
@@ -229,7 +231,7 @@ public:
 	std::shared_ptr<BlockDesc> getBlockDesc() const { return _blockDesc; }
 	void setBlockDesc(std::shared_ptr<BlockDesc> blockDesc) { _blockDesc = blockDesc; }
 
-	std::shared_ptr<WaveformDesc> getWaveformDesc() { return _waveformDesc; }
+	std::shared_ptr<WaveformDesc> getWaveformDesc() const { return _waveformDesc; }
 	void setWaveformDesc(std::shared_ptr<WaveformDesc> waveformDesc) { _waveformDesc = waveformDesc; }
 
 	void updateHeader();

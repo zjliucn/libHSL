@@ -77,6 +77,9 @@ public:
     /// Gets the list of transforms to be applied to points as they are read
     std::vector<hsl::TransformPtr> getTransforms() const;
 
+    /// Update in-memory and disk header
+    bool updateHeader(Header const& header);
+
 protected:
     bool filterPoint(hsl::Point const& p);
     void transformPoint(hsl::Point& p);

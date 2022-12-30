@@ -67,6 +67,7 @@ public:
 protected:
 	bool loadHeader();
 	bool writeHeader();
+	bool updateHeader(Header const& header);	// update in-memory and disk header
 
 
 protected:

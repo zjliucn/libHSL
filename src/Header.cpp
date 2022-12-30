@@ -91,6 +91,20 @@ bool Header::operator==(Header const& other) const
     return true;
 }
 
+bool Header::isCompatible(const Header& other) const
+{
+    if (getReturnCount() != other.getReturnCount())
+        return false;
+
+    if (_schema != other.getSchema())
+        return false;
+
+    if (_waveformDesc->size() != other.getWaveformDesc()->size())
+        return false;
+
+    return true;
+}
+
 void Header::updateHeader()
 {
 	// update field count
@@ -227,25 +241,28 @@ double Header::getScaleZ() const
 
 void Header::setScale(double x, double y, double z)
 {
-    FieldArray fa;
-	if (_schema.getFieldsById(FI_X, fa))
+    Field* field = _schema.getFieldById(FI_X);
+	if (field != NULL)
 	{
-		if (fa[0].isScaled() == false)
-			fa[0].isScaled(true);
-		fa[0].setScale(x);
-	}
-	if (_schema.getFieldsById(FI_Y, fa))
-	{
-		if (fa[0].isScaled() == false)
-			fa[0].isScaled(true);
-		fa[0].setScale(y);
+		if (field->isScaled() == false)
+            field->isScaled(true);
+        field->setScale(x);
 	}
 
-	if (_schema.getFieldsById(FI_Z, fa))
+	field = _schema.getFieldById(FI_Y);
+	if (field != NULL)
 	{
-		if (fa[0].isScaled() == false)
-			fa[0].isScaled(true);
-		fa[0].setScale(z);
+		if (field->isScaled() == false)
+            field->isScaled(true);
+        field->setScale(y);
+	}
+
+	field = _schema.getFieldById(FI_Z);
+	if (field != NULL)
+	{
+		if (field->isScaled() == false)
+            field->isScaled(true);
+        field->setScale(z);
 	}
 }
 
@@ -272,27 +289,28 @@ double Header::getOffsetZ() const
 
 void Header::setOffset(double x, double y, double z)
 {
-    FieldArray fa;
-
-	if(_schema.getFieldsById(FI_X, fa))
+	Field* field = _schema.getFieldById(FI_X);
+	if (field != NULL)
 	{
-		if (fa[0].isOffseted() == false)
-			fa[0].isOffseted(true);
-		fa[0].setOffset(x);
+		if (field->isOffseted() == false)
+            field->isOffseted(true);
+        field->setOffset(x);
 	}
 
-	if(_schema.getFieldsById(FI_Y, fa))
+	field = _schema.getFieldById(FI_Y);
+	if (field != NULL)
 	{
-		if (fa[0].isOffseted() == false)
-			fa[0].isOffseted(true);
-		fa[0].setOffset(y);
+		if (field->isOffseted() == false)
+            field->isOffseted(true);
+        field->setOffset(y);
 	}
 
-	if(_schema.getFieldsById(FI_Z, fa))
+	field = _schema.getFieldById(FI_Z);
+	if (field != NULL)
 	{
-		if (fa[0].isOffseted() == false)
-			fa[0].isOffseted(true);
-		fa[0].setOffset(z);
+		if (field->isOffseted() == false)
+            field->isOffseted(true);
+        field->setOffset(z);
 	}
 }
 
@@ -417,27 +435,26 @@ void Header::setSchema(const Schema& schema)
     _schema = schema;
 
     // Reset the X, Y, Z dimensions with offset and scale values
-    FieldArray fa;
-    if (!_schema.getFieldsById(FI_X, fa))
+	Field* field = _schema.getFieldById(FI_X);
+	if (field != NULL)
         throw libhsl_error("X dimension not on schema, you\'ve got big problems!");
-    fa[0].setScale(1.0);
-    fa[0].isFinitePrecision(true);
-    fa[0].setOffset(0.0);
-    _schema.addField(fa[0]);
+    field->setScale(1.0);
+    field->isFinitePrecision(true);
+    field->setOffset(0.0);
 
-    if (!_schema.getFieldsById(FI_Y, fa))
+	field = _schema.getFieldById(FI_Y);
+	if (field != NULL)
         throw libhsl_error("Y dimension not on schema, you\'ve got big problems!");
-    fa[0].setScale(1.0);
-    fa[0].isFinitePrecision(true);
-    fa[0].setOffset(0.0);
-    _schema.addField(fa[0]);
+    field->setScale(1.0);
+    field->isFinitePrecision(true);
+    field->setOffset(0.0);
 
-    if (!_schema.getFieldsById(FI_Z, fa))
+	field = _schema.getFieldById(FI_Z);
+	if (field != NULL)
         throw libhsl_error("Z dimension not on schema, you\'ve got big problems!");
-    fa[0].setScale(1.0);
-    fa[0].isFinitePrecision(true);
-    fa[0].setOffset(0.0);
-    _schema.addField(fa[0]);
+    field->setScale(1.0);
+    field->isFinitePrecision(true);
+    field->setOffset(0.0);
 }
 
 void Header::setCompressed(bool b)

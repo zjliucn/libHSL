@@ -152,7 +152,7 @@ bool Field::operator==(const Field& other) const
 
  bool Field::isScaled() const
  {
-     if (_dataType == DT_BIT || DT_CHAR || DT_UNKNOWN)
+     if (_dataType == DT_BIT || _dataType == DT_CHAR || _dataType == DT_UNKNOWN)
         return false;
     else
     {
@@ -162,7 +162,7 @@ bool Field::operator==(const Field& other) const
 
 void Field::isScaled(bool v)
 {
-     if (_dataType == DT_BIT || DT_CHAR || DT_UNKNOWN)
+     if (_dataType == DT_BIT || _dataType == DT_CHAR || _dataType == DT_UNKNOWN)
         _isScaled = false;
     else
     {
@@ -172,7 +172,7 @@ void Field::isScaled(bool v)
 
 bool Field::isOffseted() const
  {
-     if (_dataType == DT_BIT || DT_CHAR || DT_UNKNOWN)
+     if (_dataType == DT_BIT || _dataType == DT_CHAR || _dataType == DT_UNKNOWN)
         return false;
     else
     {
@@ -182,7 +182,7 @@ bool Field::isOffseted() const
 
 void Field::isOffseted(bool v)
 {
-     if (_dataType == DT_BIT || DT_CHAR || DT_UNKNOWN)
+     if (_dataType == DT_BIT || _dataType == DT_CHAR || _dataType == DT_UNKNOWN)
         _isOffseted = false;
     else
     {

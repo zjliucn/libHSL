@@ -136,6 +136,7 @@ public:
     bool getField(size_t index, Field &field) const;
 
 	bool hasField(FieldId id) const;
+    Field* getFieldById(FieldId id);
     bool getFieldsById(FieldId id, FieldArray &fields) const;
 	size_t getFieldCountById(FieldId id) const;
 

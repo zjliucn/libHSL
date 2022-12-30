@@ -624,6 +624,17 @@ size_t Schema::getFieldCount() const
     return idx.size();
 }
 
+Field* Schema::getFieldById(FieldId aId)
+{
+	index_by_id const& id_index = _index.get<id>();
+	index_by_id::const_iterator it0, it1;
+	boost::tuples::tie(it0, it1) = id_index.equal_range(aId);
+
+	if (it0 == it1)
+		return NULL;
+	else
+	 return (Field *)&(*it0);
+}
 
 bool Schema::getFieldsById(FieldId aId, FieldArray &fields) const
 {

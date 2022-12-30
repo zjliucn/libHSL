@@ -204,5 +204,9 @@ std::vector<TransformPtr>  Writer::getTransforms() const
     return _transforms;
 }
 
+bool Writer::updateHeader(Header const& header)
+{
+	return FileIO::updateHeader(header);
+}
 
 }

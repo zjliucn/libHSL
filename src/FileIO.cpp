@@ -213,6 +213,20 @@ bool FileIO::writeHeader()
 	return true;
 }
 
+bool FileIO::updateHeader(Header const& header)
+{
+	if (_header == nullptr || !_header->isCompatible(header))
+		return false;
+
+	setHeader(header);
+	long pre = ftell(_fp);
+	fseek(_fp, 0, SEEK_SET);
+	bool state = writeHeader();
+	fseek(_fp, pre, SEEK_SET);    // back to previous position
+
+	return state;
+}
+
 bool loadFieldDesc(FILE* fp, FieldDesc &fieldDesc)
 {
 	unsigned char type;
