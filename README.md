@@ -19,15 +19,15 @@ For Unix/Linux/Mac:
 libHSL provides a development interface similar to libLAS (https://liblas.org/) library.
 
 In order to migrate from ASPRS LAS data format to HSP data format, libHSL supports 9 predefined point cloud formats, including:
-  - PF_ Pointformat0 defines the most basic XYZ format;
-  - PF_ Pointformat1 defines the corresponding point data format 0 in Las point cloud format;
-  - PF_ Pointformat2 defines the corresponding point data formats 1 and 6 in Las point cloud format;
-  - PF_ Pointformat3 defines the corresponding point data format 2 in Las point cloud format;
-  - PF_ Pointformat4 defines the corresponding point data formats 3 and 7 in Las point cloud format;
-  - PF_ Pointformat5 defines the corresponding point data formats 4 and 9 in Las point cloud format;
-  - PF_ Pointformat6 defines the corresponding point data format 5 in Las point cloud format;
-  - PF_ Pointformat7 defines the corresponding point data format 8 in Las point cloud format;
-  - PF_ Pointformat8 defines the corresponding point data format 10 in Las point cloud format.
+  - PF_ PointFormat0 defines the most basic XYZ format;
+  - PF_ PointFormat1 defines the corresponding point data format 0 in Las point cloud format;
+  - PF_ PointFormat2 defines the corresponding point data formats 1 and 6 in Las point cloud format;
+  - PF_ PointFormat3 defines the corresponding point data format 2 in Las point cloud format;
+  - PF_ PointFormat4 defines the corresponding point data formats 3 and 7 in Las point cloud format;
+  - PF_ PointFormat5 defines the corresponding point data formats 4 and 9 in Las point cloud format;
+  - PF_ PointFormat6 defines the corresponding point data format 5 in Las point cloud format;
+  - PF_ PointFormat7 defines the corresponding point data format 8 in Las point cloud format;
+  - PF_ PointFormat8 defines the corresponding point data format 10 in Las point cloud format.
 
 To learn how to use libHSL, please find the sample usage code from the sample directory. The sample directory contains sample code for reading and writing libHSL for reference.
 
