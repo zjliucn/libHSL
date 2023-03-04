@@ -71,15 +71,37 @@ Header::Header(const Schema &schema) : _schema(schema), _fileHeader(nullptr), _b
     init();
 }
 
-Header::Header(Header const& other) : _schema(other._schema), _fileHeader(other._fileHeader), _blockDesc(other._blockDesc), 
-    _waveformDesc(other._waveformDesc), _pointRecordsByReturn(other._pointRecordsByReturn), _isCompressed(other._isCompressed)
+Header::Header(Header const& other) : _schema(other._schema), _pointRecordsByReturn(other._pointRecordsByReturn), 
+    _isCompressed(other._isCompressed)
 {
+    copyBlocks(other);
+}
+
+void Header::copyBlocks(const Header& header)
+{
+    _fileHeader = std::make_shared<FileHeader>();
+    if (_fileHeader == nullptr)
+        throw libhsl_error("Cannot allocate memory for file header.");
+    std::memcpy(_fileHeader.get(), header._fileHeader.get(), sizeof(FileHeader));
+    _blockDesc = std::make_shared<BlockDesc>();
+    if (_blockDesc == nullptr)
+        throw libhsl_error("Cannot allocate memory for block description.");
+    std::memcpy(_blockDesc.get(), header._blockDesc.get(), sizeof(BlockDesc));
+    _waveformDesc = std::make_shared<WaveformDesc>();
+    if (_blockDesc == nullptr)
+        throw libhsl_error("Cannot allocate memory for waveform description.");
+    WaveformDesc(*header._waveformDesc).swap(*_waveformDesc);
 }
 
 Header& Header::operator=(Header const& rhs)
 {
     if (&rhs != this)
     {
+        copyBlocks(rhs);
+
+        _schema = rhs._schema;
+        _pointRecordsByReturn = rhs._pointRecordsByReturn;
+        _isCompressed = rhs._isCompressed;
     }
     return *this;
 }
@@ -87,6 +109,13 @@ Header& Header::operator=(Header const& rhs)
 bool Header::operator==(Header const& other) const
 {
     if (&other == this) return true;
+
+    if (_schema != other._schema) return false;
+    if (memcmp(_fileHeader.get(), other._fileHeader.get(), sizeof(FileHeader)) != 0) return false;
+    if (memcmp(_blockDesc.get(), other._blockDesc.get(), sizeof(BlockDesc)) != 0) return false;
+    if (*_waveformDesc == *(other._waveformDesc)) return false;
+    if (_pointRecordsByReturn != other._pointRecordsByReturn) return false;
+    if (_isCompressed != other._isCompressed) return false;
 
     return true;
 }
@@ -225,6 +254,74 @@ double Header::getScaleX() const
     return fa[0].getScale();
 }
 
+void Header::setScaleX(double x)
+{
+    Field* field = _schema.getFieldById(FI_X);
+    if (field != NULL)
+    {
+        if (field->isScaled() == false)
+            field->isScaled(true);
+        field->setScale(x);
+    }
+}
+
+void Header::setScaleY(double y)
+{
+
+    Field* field = _schema.getFieldById(FI_Y);
+    if (field != NULL)
+    {
+        if (field->isScaled() == false)
+            field->isScaled(true);
+        field->setScale(y);
+    }
+}
+
+void Header::setScaleZ(double z)
+{
+    Field* field = _schema.getFieldById(FI_Z);
+    if (field != NULL)
+    {
+        if (field->isScaled() == false)
+            field->isScaled(true);
+        field->setScale(z);
+    }
+}
+
+void Header::setOffsetX(double x)
+{
+    Field* field = _schema.getFieldById(FI_X);
+    if (field != NULL)
+    {
+        if (field->isOffseted() == false)
+            field->isOffseted(true);
+        field->setOffset(x);
+    }
+}
+
+void Header::setOffsetY(double y)
+{
+    Field* field = _schema.getFieldById(FI_Y);
+    if (field != NULL)
+    {
+        if (field->isOffseted() == false)
+            field->isOffseted(true);
+        field->setOffset(y);
+    }
+}
+
+void Header::setOffsetZ(double z)
+{
+    Field* field = _schema.getFieldById(FI_Z);
+    if (field != NULL)
+    {
+        if (field->isOffseted() == false)
+            field->isOffseted(true);
+        field->setOffset(z);
+    }
+}
+
+
 double Header::getScaleY() const
 {
     FieldArray fa;
@@ -342,6 +439,36 @@ double Header::getMaxZ() const
 double Header::getMinZ() const
 {
     return _fileHeader->zMin;
+}
+
+void Header::setMaxX(double x)
+{
+    _fileHeader->xMax = x;
+}
+
+void Header::setMinX(double x)
+{
+    _fileHeader->xMin = x;
+}
+
+void Header::setMaxY(double y)
+{
+    _fileHeader->yMax = y;
+}
+
+void Header::setMinY(double y)
+{
+    _fileHeader->yMin = y;
+}
+
+void Header::setMaxZ(double z)
+{
+    _fileHeader->zMax = z;
+}
+
+void Header::setMinZ(double z)
+{
+    _fileHeader->zMin = z;
 }
 
 void Header::setMax(double x, double y, double z)

@@ -204,7 +204,12 @@ public:
 		unsigned long theSamples, unsigned long theInterval, double theGain, double theOffset)
 		: id(theId), sampleBits(theSampleBits), compressType(theCompressType),
 		samples(theSamples), interval(theInterval), gain(theGain), offset(theOffset){};
-
+	bool operator==(const WaveformPacketDesc& other) const
+	{
+		if (&other == this) return true;
+		if (memcmp(this, &other, sizeof(WaveformPacketDesc)) != 0) return false;
+		return true;
+	}
 public:
 	unsigned short    id;
 	unsigned char     reserved[4];

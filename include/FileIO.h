@@ -55,7 +55,8 @@ public:
 	void setFilename(std::string filename);
 	inline std::string getFilename() const { return _filename; };
 
-    Header const& getHeader() const;    
+    Header const& getHeader() const;
+	Header& getHeader();
     void setHeader(Header const& header);
 
     /// Fetch the georeference

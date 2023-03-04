@@ -41,17 +41,68 @@ int main()
 
         typedef std::pair<double, double> minmax_t;
         uint32_t i = 0;
+        size_t bandCount = h.getSchema().getBandCount();
+        hsl::Band band;
+		bool hasBandData = false;
+		hsl::DataType dataType = hsl::DT_UCHAR;
+		if (bandCount != 0 && h.getSchema().getBand(0, band))
+		{
+			hasBandData = true;
+			dataType = band.getDataType();
+		}
         while (reader.readNextPoint(true))
         {
             hsl::Point const& p = reader.getPoint();
 			cout << "xyz: " << std::fixed << std::setprecision(6)
 				<< p[0] << ", " << p[1] << ", " << p[2]
 				<< std::endl;
-			double values[3] = { 0.0, 0.0, 0.0 };
-			p.getBandValues(0, 3, (unsigned char *)values, sizeof(double) * 3);
-			cout << "Band values: " << std::fixed << std::setprecision(6)
-				<< values[0] << ", " << values[1] << ", " << values[2]
-				<< std::endl;
+			double values[1] = { 0.0 };
+			p.getBandValues(0, 1, (unsigned char *)values, sizeof(double) * 1);
+
+			if (hasBandData)
+			{
+				switch (dataType)
+				{
+				case hsl::DT_UCHAR:
+					cout << "Band values: " << std::fixed << std::setprecision(6)
+						<< *(unsigned char*)values << std::endl;
+					break;
+				case hsl::DT_SHORT:
+					cout << "Band values: " << std::fixed << std::setprecision(6)
+						<< *(short*)values << std::endl;
+					break;
+				case hsl::DT_USHORT:
+					cout << "Band values: " << std::fixed << std::setprecision(6)
+						<< *(unsigned short*)values << std::endl;
+					break;
+				case hsl::DT_LONG:
+					cout << "Band values: " << std::fixed << std::setprecision(6)
+						<< *(int*)values << std::endl;
+					break;
+				case hsl::DT_ULONG:
+					cout << "Band values: " << std::fixed << std::setprecision(6)
+						<< *(unsigned int*)values << std::endl;
+					break;
+				case hsl::DT_LONGLONG:
+					cout << "Band values: " << std::fixed << std::setprecision(6)
+						<< *(int64_t*)values << std::endl;
+					break;
+				case hsl::DT_ULONGLONG:
+					cout << "Band values: " << std::fixed << std::setprecision(6)
+						<< *(uint64_t*)values << std::endl;
+					break;
+				case hsl::DT_FLOAT:
+					cout << "Band values: " << std::fixed << std::setprecision(6)
+						<< *(float*)values << std::endl;
+					break;
+				case hsl::DT_DOUBLE:
+					cout << "Band values: " << std::fixed << std::setprecision(6)
+						<< *(double*)values << std::endl;
+					break;
+				default:
+					break;
+				}
+			}
 
 			hsl::Variant variant;
 			hsl::VariantArray va;
@@ -63,7 +114,7 @@ int main()
 			variant = va[0];
 			variant.getValue(classification);
 			cout << "Number of returns: " << std::fixed << std::setprecision(0)
-				<< (unsigned short)noOfReturns << ", " << "Classification: " << classification
+				<< (unsigned short)noOfReturns << ", " << "Classification: " << (unsigned short)classification
 				<< std::endl;
 
 			if (p.hasWaveformData())

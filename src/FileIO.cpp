@@ -68,6 +68,11 @@ Header const& FileIO::getHeader() const
 	return *_header;
 }
 
+Header& FileIO::getHeader()
+{
+	return *_header;
+}
+
 void FileIO::setHeader(Header const& header)
 {
 	_header = HeaderPtr(new Header(header));

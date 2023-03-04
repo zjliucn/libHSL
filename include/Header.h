@@ -143,47 +143,60 @@ public:
 
     std::vector<uint64_t> getPointRecordsByReturnCount() const;
     
-    /// Get scale factor for X coordinate.
+    /// Get/set scale factor for X coordinate.
     double getScaleX() const;
+    void setScaleX(double x);
 
-    /// Get scale factor for Y coordinate.
+    /// Get/set scale factor for Y coordinate.
     double getScaleY() const;
-    
-    /// Get scale factor for Z coordinate.
+    void setScaleY(double y);
+
+    /// Get/set scale factor for Z coordinate.
     double getScaleZ() const;
+    void setScaleZ(double z);
 
     /// Set values of scale factor for X, Y and Z coordinates.
     void setScale(double x, double y, double z);
 
-    /// Get X coordinate offset.
+    /// Get/set X coordinate offset.
     double getOffsetX() const;
+    void setOffsetX(double x);
     
-    /// Get Y coordinate offset.
+    /// Get/set Y coordinate offset.
     double getOffsetY() const;
-    
-    /// Get Z coordinate offset.
+    void setOffsetY(double y);
+
+    /// Get/set Z coordinate offset.
     double getOffsetZ() const;
+    void setOffsetZ(double z);
+
 
     /// Set values of X, Y and Z coordinates offset.
     void setOffset(double x, double y, double z);
 
-    /// Get minimum value of extent of X coordinate.
+    /// Get/set maximum value of extent of X coordinate.
     double getMaxX() const;
+    void setMaxX(double x);
 
-    /// Get maximum value of extent of X coordinate.
+    /// Get/set minimum value of extent of X coordinate.
     double getMinX() const;
+    void setMinX(double x);
 
-    /// Get minimum value of extent of Y coordinate.
+    /// Get/set maximum value of extent of Y coordinate.
     double getMaxY() const;
+    void setMaxY(double y);
 
-    /// Get maximum value of extent of Y coordinate.
+    /// Get/set minimum value of extent of Y coordinate.
     double getMinY() const;
+    void setMinY(double y);
 
-    /// Get minimum value of extent of Z coordinate.
+    /// Get/set maximum value of extent of Z coordinate.
     double getMaxZ() const;
+    void setMaxZ(double z);
 
-    /// Get maximum value of extent of Z coordinate.
+    /// Get/set minimum value of extent of Z coordinate.
     double getMinZ() const;
+    void setMinZ(double z);
 
     /// Set maximum values of extent of X, Y and Z coordinates.
     void setMax(double x, double y, double z);
@@ -238,6 +251,7 @@ public:
     
 private:
     void init();
+    void copyBlocks(const Header &header);
     size_t calculateHeaderSize();
 
 private:
