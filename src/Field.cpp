@@ -32,6 +32,7 @@
 #include <algorithm>
 #include <sstream>
 #include "Schema.h"
+#include "Variant.h"
 #include "detail/private_utility.hpp"
 
 #ifdef _MSC_VER
@@ -46,6 +47,115 @@
 
 namespace hsl
 { 
+
+
+bool getScaledValue(const Variant& value, DataType rawType, Variant& rawValue, double scale, double offset)
+{
+    bool state = false;
+    switch (rawType)
+    {
+    case DT_BIT:
+    case DT_CHAR:
+    case DT_UCHAR:
+    {
+        rawValue = value;
+        state = true;
+    }
+    break;
+    case DT_SHORT:
+    {
+        double v;
+        if (value.getValue(v))
+        {
+            rawValue.setValue(static_cast<int16_t>(detail::sround((v - offset) / scale)));
+            state = true;
+        }
+    }
+    break;
+    case DT_USHORT:
+    {
+        double v;
+        if (value.getValue(v))
+        {
+            rawValue.setValue(static_cast<uint16_t>(detail::sround((v - offset) / scale)));
+            state = true;
+        }
+    }
+    break;
+    case DT_LONG:
+    {
+        double v;
+        if (value.getValue(v))
+        {
+            rawValue.setValue(static_cast<int32_t>(detail::sround((v - offset) / scale)));
+            state = true;
+        }
+    }
+    break;
+    case DT_ULONG:
+    {
+        double v;
+        if (value.getValue(v))
+        {
+            rawValue.setValue(static_cast<uint32_t>(detail::sround((v - offset) / scale)));
+            state = true;
+        }
+    }
+    break;
+    case DT_LONGLONG:
+    {
+        double v;
+        if (value.getValue(v))
+        {
+            rawValue.setValue(static_cast<int64_t>(detail::sround((v - offset) / scale)));
+            state = true;
+        }
+    }
+    break;
+    case DT_ULONGLONG:
+    {
+        double v;
+        if (value.getValue(v))
+        {
+            rawValue.setValue(static_cast<uint64_t>(detail::sround((v - offset) / scale)));
+            state = true;
+        }
+    }
+    break;
+    case DT_FLOAT:
+    {
+        double v;
+        if (value.getValue(v))
+        {
+            rawValue.setValue(static_cast<float>((v - offset) / scale));
+            state = true;
+        }
+    }
+    break;
+    case DT_DOUBLE:
+    {
+        double v;
+        if (value.getValue(v))
+        {
+            rawValue.setValue((v - offset) / scale);
+            state = true;
+        }
+    }
+    break;
+    default:
+    {
+        state = false;
+    }
+    break;
+    }
+
+    return state;
+}
+
+
+
+
+
 Field::Field() : _dataType(DT_UNKNOWN), _id(FI_UNKNOWN), _name(""), _bitSize(0), _isRequired(false),
     _isActive(false), _description(std::string("")), _min(0), _max(0), _isNumeric(false), _isSigned(false), _isInteger(false),
     _isScaled(false), _isOffseted(false), _position(0), _scale(1.0), _offset(0.0), _precise(true), _byteOffset(0), _bitOffset(0)

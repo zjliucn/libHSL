@@ -59,10 +59,8 @@ public:
 	bool writePoint(const Point & point);
 	bool writePoint(Point & point);
 
-    /// Sets filters that are used to determine whether or not to 
-    /// keep a point that was read from the file.  Filters have *no* 
-    /// effect for reading data at specific locations in the file.  
-    /// They only affect reading ReadNextPoint-style operations
+    /// Sets filters that are used to determine wither or not to 
+    /// keep a point that before we write it
     /// Filters are applied *before* transforms.
     void setFilters(std::vector<hsl::FilterPtr> const& filters);
     

@@ -44,11 +44,6 @@ namespace hsl
 class Header;
 class Field;
 
-enum ScaleOffsetOp
-{
-    SO_In,
-    SO_Out
-};
 
 /// Point data record contains X, Y, Z coordinates and variable attributes.
 class LIBHSL_API Point
@@ -106,6 +101,8 @@ public:
     bool setData(size_t startIndex, size_t stopIndex, const unsigned char *data, size_t size);
     
     void setWaveformDataAddress(uint64_t offset, uint32_t size);
+    bool getWaveformDataAddress(uint64_t &offset, uint32_t &size);
+
     void setWaveformDataByteOffset(uint64_t offset);
 	bool getWaveformDataByteOffset(uint64_t &offset) const;
 

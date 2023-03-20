@@ -260,6 +260,11 @@ bool Reader::seek(size_t n)
     return true;
 }
 
+size_t Reader::currentIndex()
+{
+    return _current;
+}
+
 void Reader::transformPoint(hsl::Point& p)
 {    
 

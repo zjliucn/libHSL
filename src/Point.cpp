@@ -54,123 +54,6 @@ using namespace boost;
 namespace hsl {
 
 
-// descale the value given our scale/offset
-template <typename T>
-void getScaledValue(const T &valueIn, T &valueOut, double scale, double offset, ScaleOffsetOp scaleInOut)
-{
-    if (scaleInOut == SO_In)
-    {
-        valueOut = static_cast<T>(detail::sround((valueIn - offset) / scale));
-    }else if (scaleInOut == SO_Out)
-    {
-        valueOut = static_cast<T>(detail::sround(scale * valueIn + offset));
-    }
-}
-
-bool getScaledValue(const Variant &value, DataType rawType, Variant &rawValue, double scale, double offset)
-{
-    bool state = false;
-    switch (rawType)
-    {
-        case DT_BIT:
-        case DT_CHAR:
-        case DT_UCHAR:
-            {
-                rawValue = value;
-                state = true;                
-            }
-            break;
-        case DT_SHORT:
-            {
-                double v;
-                if(value.getValue(v))
-                {
-                    rawValue.setValue(static_cast<int16_t>(detail::sround((v - offset) / scale)));                
-                    state = true;
-                }
-            }
-            break;
-        case DT_USHORT:
-            {
-                double v;
-                if(value.getValue(v))
-                {
-                    rawValue.setValue(static_cast<uint16_t>(detail::sround((v - offset) / scale)));  
-                    state = true;
-                }              
-            }
-            break;
-        case DT_LONG:
-            {
-                double v;
-                if(value.getValue(v))
-                {
-                    rawValue.setValue(static_cast<int32_t>(detail::sround((v - offset) / scale)));
-                    state = true;
-                }                
-            }
-            break;
-        case DT_ULONG:
-            {
-                double v;
-                if(value.getValue(v))
-                {
-                    rawValue.setValue(static_cast<uint32_t>(detail::sround((v - offset) / scale))); 
-                    state = true;
-                }               
-            }
-            break;
-        case DT_LONGLONG:
-            {
-                double v;
-                if(value.getValue(v))
-                {
-                    rawValue.setValue(static_cast<int64_t>(detail::sround((v - offset) / scale))); 
-                    state = true;
-                }               
-            }
-            break;
-        case DT_ULONGLONG:
-            {
-                double v;
-                if (value.getValue(v))
-                {
-                    rawValue.setValue(static_cast<uint64_t>(detail::sround((v - offset) / scale))); 
-                    state = true;
-                }               
-            }
-            break;
-        case DT_FLOAT:
-            {
-                double v;
-                if(value.getValue(v))
-                {
-                    rawValue.setValue(static_cast<float>((v - offset) / scale));  
-                    state = true;
-                }              
-            }
-            break;            
-        case DT_DOUBLE:
-            {
-                double v;
-                if (value.getValue(v))
-                {
-                    rawValue.setValue((v - offset) / scale);                
-                    state = true;
-                }
-            }
-            break;
-        default:
-            {
-                state = false;
-            }
-            break;
-    }
-
-    return state;
-}
-
-
 Point::Point(const Header * hdr)
     : 
      _header(hdr)
@@ -843,7 +726,7 @@ bool Point::setRawValueToField(const Field &field, const Variant &value)
             size_t s;
             if(value.getByteSize(s))
             {
-                if (s == size && value.getValue(p_data))
+                if (s <= size && value.getValue(p_data))
                     state = true;
             }
 		}
@@ -998,6 +881,14 @@ void Point::setWaveformDataAddress(uint64_t offset, uint32_t size)
 {
     setWaveformDataByteOffset(offset);
     setWaveformDataSize(size);
+}
+
+bool Point::getWaveformDataAddress(uint64_t& offset, uint32_t& size)
+{
+    if (getWaveformDataSize(size) && getWaveformDataByteOffset(offset))
+        return true;
+    
+    return false;
 }
 
 void Point::setWaveformDataByteOffset(uint64_t offset)

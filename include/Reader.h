@@ -74,6 +74,9 @@ public:
     /// @exception may throw std::exception
     bool seek(size_t n);
 
+    /// Get the current point record index
+    size_t currentIndex();
+
     /// Provides index-based access to point records.
     /// The operator is implemented in terms of ReadPointAt method
     /// and is not const-qualified because it updates file stream position.

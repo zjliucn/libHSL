@@ -43,8 +43,15 @@
 #include "hslLIB.h"
 #include "hslDefinitions.h"
 #include "IdDefinitions.h"
+#include "Variant.h"
 
-namespace hsl {  
+namespace hsl {
+
+enum ScaleOffsetOp
+{
+    SO_In,
+    SO_Out
+};
 
 /// Field definition
 class LIBHSL_API Field
@@ -207,6 +214,9 @@ private:
   
 };
 
+typedef Field Band;
+
+
 struct SetRequired
 {
     SetRequired(bool req) : req_(req) {}
@@ -233,6 +243,20 @@ private:
     bool req_;
 };
 
-typedef Field Band;
+// descale the value given our scale/offset
+template <typename T>
+void getScaledValue(const T& valueIn, T& valueOut, double scale, double offset, ScaleOffsetOp scaleInOut)
+{
+    if (scaleInOut == SO_In)
+    {
+        valueOut = static_cast<T>(detail::sround((valueIn - offset) / scale));
+    }
+    else if (scaleInOut == SO_Out)
+    {
+        valueOut = static_cast<T>(detail::sround(scale * valueIn + offset));
+    }
+};
+
+bool getScaledValue(const Variant& value, DataType rawType, Variant& rawValue, double scale, double offset);
 
 }
