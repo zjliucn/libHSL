@@ -484,7 +484,7 @@ bool Updater::writeRawValueToField(const Field& field, const Variant& value)
                     if(fseek(_fp, pos + offset, SEEK_SET) == 0 && fwrite(p_data, size, 1, _fp) == 1)
                         state = true;
                 }
-                delete p_data;
+                delete [] p_data;
             }
         }
     }
