@@ -584,6 +584,18 @@ bool Schema::removeField(size_t ind)
 	return true;
 }
 
+bool Schema::removeAllFields()
+{
+	size_t count = getFieldCount();
+	for (auto i = 0; i < count; i++)
+	{
+		if (removeField(0) == false)
+			return false;
+	}
+
+	return true;
+}
+
 bool Schema::getFields(std::string const& aName, FieldArray &fields) const
 {    
     index_by_name::const_iterator it = _index.get<name>().find(aName);
@@ -702,6 +714,37 @@ bool Schema::getBand(size_t n, Band &band) const
 	return false;
 }
 
+bool Schema::getBandDesc(size_t n, BandDesc& bandDesc) const
+{
+	Band band;
+	size_t index;
+	if (getNthIndex(FI_BandValue, n, index) && getField(index, band))
+	{
+		bandDesc.type = band.getDataType();
+		bandDesc.name = band.getName();
+		bandDesc.description = band.getDescription();
+		return true;
+	}
+
+	return false;
+}
+
+bool Schema::getBandDescs(BandDescArray& bandDescs) const
+{
+	size_t count = getBandCount();
+	bandDescs.clear();
+	BandDesc bandDesc;
+	for (auto i = 0; i < count; i++)
+	{
+		if (getBandDesc(i, bandDesc))
+			bandDescs.push_back(bandDesc);
+		else
+			return false;
+	}
+
+	return true;
+}
+
 bool Schema::addBands(const BandDesc &band, size_t count)
 {
 	for (size_t i = 0; i < count; i++)
@@ -736,6 +779,18 @@ bool Schema::removeBand(size_t index)
 	}
 
 	// if no band is found
+	return true;
+}
+
+bool Schema::removeAllBands()
+{
+	size_t count = getBandCount();
+	for (auto i = 0; i < count; i++)
+	{
+		if (removeBand(0) == false)
+			return false;
+	}
+
 	return true;
 }
 

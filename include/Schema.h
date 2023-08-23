@@ -61,12 +61,13 @@ namespace hsl
 class BandDesc
 {
 public:
+    BandDesc() : type(DT_UCHAR), name("Unnamed band"), description("") {}
 	BandDesc(DataType theType, const std::string theName = "", const std::string theDescription = "") : type(theType), name(theName), description(theDescription) {};
 
 public:
 	DataType type;
-	const std::string name;
-	const std::string description;
+	std::string name;
+	std::string description;
 };
 
 typedef std::vector<Field> FieldArray;
@@ -131,6 +132,7 @@ public:
     
     void addField(Field const& field);
 	bool removeField(size_t index);
+    bool removeAllFields();
 
 	bool getFields(std::string const& name, FieldArray &fields) const;
     bool getField(size_t index, Field &field) const;
@@ -148,7 +150,10 @@ public:
 
 	size_t getBandCount() const;
 	bool getBand(size_t n, Band &band) const;
-	bool removeBand(size_t index);
+    bool getBandDesc(size_t n, BandDesc& bandDesc) const;
+    bool getBandDescs(BandDescArray& bandDescs) const;
+    bool removeBand(size_t index);
+    bool removeAllBands();
 
 	bool addBands(const BandDesc &band, size_t count);
 	bool addBands(const BandDescArray &bands);

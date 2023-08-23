@@ -131,6 +131,8 @@ public:
     bool getValue(size_t index, Variant &value) const;
     bool setValue(size_t index, Variant &value);
 
+    bool getBandValue(size_t bandIndex, Variant& value) const;
+    bool setBandValue(size_t bandIndex, Variant& value);
     bool getBandValues(size_t startBandIndex, size_t bandCount, unsigned char *data, size_t size) const;
     bool setBandValues(size_t startBandIndex, size_t bandCount, const unsigned char *data, size_t size);
     

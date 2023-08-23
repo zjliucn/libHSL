@@ -1031,13 +1031,41 @@ bool Point::hasWaveformData() const
     return (_waveformData.size() > 0);
 }
 
+bool Point::getBandValue(size_t bandIndex, Variant& value) const
+{
+    size_t index = 0;
+    bool state = false;
+
+    const Schema& schema = const_cast<Header*>(_header)->getSchema();
+    if (schema.getNthIndex(FI_BandValue, bandIndex, index))
+    {
+        state = getValue(index, value);
+    }
+
+    return state;
+}
+
+bool Point::setBandValue(size_t bandIndex, Variant& value)
+{
+    size_t index = 0;
+    bool state = false;
+
+    const Schema& schema = (_header)->getSchema();
+    if (schema.getNthIndex(FI_BandValue, bandIndex, index))
+    {
+        state = setValue(index, value);
+    }
+
+    return state;
+}
+
 bool Point::getBandValues(size_t startBandIndex, size_t bandCount, unsigned char *data, size_t size) const
 {
     size_t startIndex, stopIndex;
     bool state = false;
 
     // make sure we have sufficient data
-    Schema & schema = const_cast<Header *>(_header)->getSchema();
+    const Schema & schema = (_header)->getSchema();
 
     if(schema.getNthIndex(FI_BandValue, startBandIndex, startIndex) && 
         schema.getNthIndex(FI_BandValue, startBandIndex + bandCount - 1, stopIndex))
