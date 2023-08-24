@@ -192,7 +192,6 @@ void Point::setHeader(Header const* header)
         setY(p.getY());
         setZ(p.getZ());
         
-
         // FIXME: copy other custom fields here?  resetting the 
         // headerptr can be catastrophic in a lot of cases.  
     } 
@@ -279,7 +278,6 @@ void Point::setY( double const& value )
 
     scale = getHeader()->getScaleY();
     offset = getHeader()->getOffsetY();
-
 
     // descale the value given our scale/offset
     v = static_cast<int32_t>(detail::sround((value - offset) / scale));
@@ -403,36 +401,51 @@ bool Point::getValuesById(FieldId id, VariantArray &values) const
         return false;
     }
 
-	double scale = 1.0;
-	double offset = 0.0;
-	bool state = false;
-	values.clear();
-	for (size_t i = 0; i < fields.size(); i++)
+    values.clear();
+    Variant value;
+    if (id != hsl::FI_X && id != hsl::FI_Y && id != hsl::FI_Z)
     {
-		Variant rawValue, value;
-		if (getRawValueFromField(fields[i], rawValue))
-		{
-			if (fields[i].isScaled() || fields[i].isOffseted())
-			{
-				if (fields[i].isScaled())
-					scale = fields[i].getScale();
-				double offset = 0.0;
-				if (fields[i].isOffseted())
-					offset = fields[i].getOffset();
+        double scale = 1.0;
+        double offset = 0.0;
+        bool state = false;
+        for (size_t i = 0; i < fields.size(); i++)
+        {
+            Variant rawValue;
+            if (getRawValueFromField(fields[i], rawValue))
+            {
+                if (fields[i].isScaled() || fields[i].isOffseted())
+                {
+                    scale = 1.0;
+                    if (fields[i].isScaled())
+                        scale = fields[i].getScale();
+                    offset = 0.0;
+                    if (fields[i].isOffseted())
+                        offset = fields[i].getOffset();
 
-				if (!getScaledValue(rawValue, fields[i].getDataType(), value, scale, offset))
-					return false;
-			}
-			else
-			{
-				value = rawValue;
-			}
-			values.push_back(value);
-		}
-		else
-		{
-			return false;
-		}
+                    if (!getScaledValue(rawValue, fields[i].getDataType(), value, scale, offset))
+                        return false;
+                }
+                else
+                {
+                    value = rawValue;
+                }
+                values.push_back(value);
+            }
+            else
+            {
+                return false;
+            }
+        }
+    }
+    else
+    {
+        if (id == FI_X)
+            value = getX();
+        else  if (id == FI_Y)
+            value = getY();
+        else
+            value = getZ();
+        values.push_back(value);
     }
 
     return true;
@@ -458,9 +471,10 @@ bool Point::setValuesById(FieldId id, const VariantArray &values)
         Field &field = d[i];
         if (field.isScaled() || field.isOffseted())
         {
+            scale = 1.0;
             if (field.isScaled())
                 scale = field.getScale();
-            double offset = 0.0;
+            offset = 0.0;
             if (field.isOffseted())
                 offset = field.getOffset();
 
