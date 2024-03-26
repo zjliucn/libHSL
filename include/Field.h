@@ -44,6 +44,7 @@
 #include "hslDefinitions.h"
 #include "IdDefinitions.h"
 #include "Variant.h"
+#include "detail/private_utility.hpp"
 
 namespace hsl {
 
